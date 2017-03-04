@@ -1,0 +1,8 @@
+node_modules
+*.pdf
+*.*~
+*.jpeg
+*.jpg
+test
+*.zip
+*.txt
