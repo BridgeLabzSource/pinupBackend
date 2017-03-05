@@ -22,6 +22,14 @@ var pinupSchema = new Schema({
     type:String,
     required:true
   },
+  link:{
+    type:String,
+    required:true
+  },
+  MainLink:{
+    type:String,
+    requried:true
+  },
   imageUrl:{
     type:String,
     required:true
@@ -34,6 +42,14 @@ var pinupSchema = new Schema({
   },
   topicId:{
     type:Number
+  },
+  liked:{
+    type:Number,
+    required:true
+  },
+  views:{
+    type:Number,
+    required:true
   }
 });
 
