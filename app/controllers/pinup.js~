@@ -82,9 +82,9 @@ router.get('/editPinup',function(req,res){
         "timeStamp":timeStamp,
         "pinupData": [
     {
-      "link": "https://www.tutorialspoint.com/angular2/angular2_services.htm",
-      "title": "Angular2 Services",
-      "imageUrl": "https://www.tutorialspoint.com/angular2/images/angular2-mini-logo.jpg",
+      "link": link,
+      "title": title,
+      "imageUrl": imageUrl,
       "topic": "tech",
       "description": "Services are JavaScript functions that are responsible for doing a specific task only. Angular services are injected using Dependency Injection mechanism and include the value, function or feature which is required by the application. There nothing much about service in Angular and there is no ServiceBase class, but still services can be treated as fundamental to Angular application.",
       "tags": "Angular 2, Tutorial, Overview, Environment, Hello World, Architecture, Modules, Components, Templates, Metadata, Data Binding, Data Display, User Input, Forms, Services, Directives, Dependency Injection.",
