@@ -9,11 +9,30 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.0",
+<<<<<<< HEAD
+    "cors": "^2.8.1",
+    "crypto": "0.0.3",
+=======
+    "cheerio": "^0.22.0",
+    "cors": "^2.8.1",
+>>>>>>> 507d4b343dddb209ff39b4231ddf8328186dd4a2
     "express": "^4.15.0",
     "express-jwt": "^5.1.0",
+    "express-subdomain": "^1.0.5",
     "jsonwebtoken": "^7.3.0",
     "mongoose": "^4.8.5",
-    "morgan": "^1.8.1"
+<<<<<<< HEAD
+    "mongoose-schema-jsonschema": "^1.1.10",
+    "mongoose-unique-validator": "^1.0.4",
+    "mongoose-validate": "0.0.5",
+    "morgan": "^1.8.1",
+    "util": "^0.10.3",
+    "utill": "^0.1.3"
+=======
+    "morgan": "^1.8.1",
+    "request": "^2.80.0"
+>>>>>>> 507d4b343dddb209ff39b4231ddf8328186dd4a2
   }
 }
