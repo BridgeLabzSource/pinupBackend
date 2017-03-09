@@ -1,5 +1,14 @@
+var express = require('express');
+var app = express();
+var expressJwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
 var  mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema
+, util = require("util")
+    , EventEmitter = require("events").EventEmitter;
+var config = require('../config');
+app.set('superSecret', config.secret);
+
 
 var userSchema = new Schema({
   username: {
@@ -26,4 +35,63 @@ var userSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('user', userSchema);
+var user = mongoose.model('user', userSchema);
+
+function UserList() {
+    EventEmitter.call(this);
+}
+
+util.inherits(UserList, EventEmitter);
+
+UserList.prototype.save = function (userData, cb) {
+var userDetails = new user(userData);
+    userDetails.save(function (error, data) {
+        if (error) {
+            return cb({
+                      success: false,
+                      message: 'User registerated failed'
+                  },null)
+        }else if(data){
+      return cb(null,{
+                      success: true,
+                      message: 'User registerated successful'
+                  });
+    }
+  });
+
+};
+
+UserList.prototype.findAll = function(login, cb) {
+
+    user.findOne({
+        emailAddress:login.emailAddress
+    },function(err,user) {
+
+        if (!user) {
+
+            return cb(null, {
+                authsuccess: false,
+                description: 'User Authentication failed because user not found'
+            });
+        } else if (user) {
+
+            var token = jwt.sign(user, app.get('superSecret'), {
+                expiresIn: 86400 // expires in 24 hours
+            });
+            //send the response to the caller with the accesstoken and data
+            console.log('Authentication is done successfully.....');
+
+            return cb({
+                authsuccess: true,
+                description: 'User logging in Successfully',
+                token: token
+            });
+        }
+    });
+};
+
+
+
+
+
+module.exports = UserList;

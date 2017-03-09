@@ -1,16 +1,15 @@
 var express = require('express');
 var app = express();
 var router = express.Router();
-var adminData= require('../model/adminregister');
-var admin = new adminData();
+var UserList= require('../model/userregister');
+var user = new UserList();
 
 
 router.post('/signin',function(req,res){
-   var login = {
-        emailAddress: req.body.emailAddress,
-        password: req.body.password
+    var login = {
+        emailAddress: req.body.emailAddress
     };
-    admin.findAll(login,function (err, data) {
+    user.findAll(login,function (err, data) {
         if (err) {
             res.send(err)
         }
