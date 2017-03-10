@@ -1,48 +1,29 @@
 var express = require('express'),
     app = express(),
     router = express.Router(),
-    adminData = require('../model/adminregister');
+    adminData = require('../model/adminregister'),
+    SubDomain = require('../model/subdomain'),
     admin = new adminData();
-// router.post('/register', function(req, res) {
-//   var email = req.body.emailAddress;
-//     admin.create(req.body, function(err, user) {
-//         if (err) {
-//           console.log(err);
-//             res.send({
-//                 "status": false,
-//                 "message": "Admin registeration failed"
-//             })
-//         } else {
-//           console.log(user);
-//             res.json({
-//                 success: true,
-//                 message: 'Admin registerated successful'
-//             });
-//         }
-//     });
-//
-// });
 
-router.post('/register',function(req,res){
+router.post('/register', function(req, res) {
     console.log('inside save controller');
-    var adminDetails ={
-        username:req.body.username,
-        password:req.body.password,
-        emailAddress:req.body.emailAddress
+    var adminDetails = {
+        username: req.body.username,
+        password: req.body.password,
+        emailAddress: req.body.emailAddress
     }
     console.log(adminDetails);
     // display saved user
-    admin.save(adminDetails,function(error,data){
-        if(error) {
+    admin.save(adminDetails, function(error, data) {
+        if (error) {
             res.send(error)
-        }
-        else {
+        } else {
             res.json(data)
         }
     });
 });
 
-router.post('/register/domain',function(req,res) {
+router.post('/register/domain', function(req, res) {
     console.log('inside save controller');
     var domain;
     domain = {
@@ -50,11 +31,10 @@ router.post('/register/domain',function(req,res) {
         subDomain: req.body.subDomain
     };
     console.log(domain);
-    admin.find(domain,function (err, data) {
+    admin.find(domain, function(err, data) {
         if (err) {
             res.send(err)
-        }
-        else {
+        } else {
             console.log(data);
             res.json(data)
         }

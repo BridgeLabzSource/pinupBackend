@@ -23,6 +23,17 @@ router.post('/register',function(req,res){
     });
 });
 
-
+// router.get('/register', function(req, res){
+//   var source = req.headers['user-agent'];
+//   // UserList.save(function (error, data) {
+//   //     if (error) {
+//   //       res.send(error);
+//   //     }else{
+//           console.log(JSON.stringify(useragent.parse(source)));
+//     // res.send(useragent.parse(source));
+// //   }
+// // });
+//
+// });
 
 module.exports = router;

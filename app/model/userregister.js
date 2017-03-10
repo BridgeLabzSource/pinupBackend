@@ -5,8 +5,9 @@ var jwt = require('jsonwebtoken');
 var  mongoose = require('mongoose'),
     Schema = mongoose.Schema
 , util = require("util")
-    , EventEmitter = require("events").EventEmitter;
-var config = require('../config');
+    , EventEmitter = require("events").EventEmitter,
+ config = require('../config');
+
 app.set('superSecret', config.secret);
 
 
@@ -74,13 +75,10 @@ UserList.prototype.findAll = function(login, cb) {
                 description: 'User Authentication failed because user not found'
             });
         } else if (user) {
-
+console.log(user);
             var token = jwt.sign(user, app.get('superSecret'), {
                 expiresIn: 86400 // expires in 24 hours
             });
-            //send the response to the caller with the accesstoken and data
-            console.log('Authentication is done successfully.....');
-
             return cb({
                 authsuccess: true,
                 description: 'User logging in Successfully',

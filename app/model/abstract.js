@@ -22,7 +22,7 @@ var AbstractSchema = function (){
       },
       createdAt :{
         type: Date
-
+        
       },
       createdBy:{
         type : ObjectId,
