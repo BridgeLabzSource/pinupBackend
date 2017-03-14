@@ -1,24 +1,28 @@
-var cookieSession = require('cookie-session');
-var express = require('express');
-var app = express();
-var useragent = require('express-useragent');
-var visit = require('../model/detail');
+var cookieSession = require('cookie-session'),
+    express = require('express'),
+    app = express(),
+    useragent = require('express-useragent'),
+    visit = require('../model/detail');
+    const requestIp = require('request-ip');
+// var os = require('os').networkInterfaces();
+var connect = require('connect');
+var http = require('http');
+var net = require('net');
+var app = connect();
+app.use(requestIp.mw({ attributeName : 'myCustomAttributeName' }))
 
-app.use(cookieSession({
-  secret: 'secret',
-  signed: true,
-}));
 
 module.exports = function(options) {
     return function(req, res, next) {
-        var source = req.headers['user-agent'];
-        // console.log(typeof useragent.getBrowser);
-        var agent = useragent.parse(source);
-        // console.log(agent);
-        // console.log(JSON.stringify(useragent.parse(source)));
+      var ip = req.myCustomAttributeName;
+          console.log(ip);
+          var ipType = net.isIP(ip); // returns 0 for invalid, 4 for IPv4, and 6 for IPv6
+          console.log('ip address is ' + ip + ' and is of type IPv' + ipType + '\n');
 
+        var source = req.headers['user-agent'];
+        var agent = useragent.parse(source);
         var device;
-        var array1 = ["isMobile", "isTablet", "isiPad", "isiPod", "isiPhone", "isDesktop","isMac","isSamsung"];
+        var array1 = ["isMobile", "isTablet", "isiPad", "isiPod", "isiPhone", "isDesktop", "isMac", "isSamsung"];
         var resultJson = useragent.parse(source);
         var flag = false,
             i = 0;
@@ -31,41 +35,32 @@ module.exports = function(options) {
                     // console.log("Mobile");
                     device = "Mobile";
                 }
-
-        flag = true;
+                flag = true;
             }
             i++;
         }
-        // console.log(resultJson["browser"]);
+        console.log(resultJson["browser"]);
+
         var data = {
-          browser : resultJson["browser"],
-          device : device
+            browser: resultJson["browser"],
+            device: device
         }
         console.log(data);
-        visit.savenow(data,function(error,data1){
-           if(error) {
-               console.log(error)
-           }
-           else {
-             console.log(data1);
-               console.log("data")
-           }
-         })
-    
-        //   cookie()
-        //   if (true) {
-        //     findby cookie(){
-        //       visitorid
-        //       update count
-        //     }
-        //
-        //   }else{
-        //   cookie save
-        //   save("visitor"){
-        //
-        //   }
-        // }
-        // res.send(buseragent.parse(source));
+        visit.savenow(data, function(error, data1) {
+            if (error) {
+                console.log(error)
+            } else {
+                console.log(data1);
+            }
+        })
+        // var ip = Object.keys(os).reduce(function (result, dev) {
+        //   return result.replace("lo","").concat(os[dev].reduce(function (result, details) {
+        //     return result.concat(details.family === 'IPv4' && !details.internal ? [details.address] : []);
+        //     result.concat(details.family === 'IPv4' && !details.internal ? [details.address] : [])
+        //     console.log("data",result.concat(details.family === 'IPv4' && !details.internal ? [details.address] : []));
+        //   }, []));
+        // });
+
         next();
     }
     return (data);

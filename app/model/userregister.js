@@ -1,31 +1,31 @@
-var express = require('express');
-var app = express();
-var expressJwt = require('express-jwt');
-var jwt = require('jsonwebtoken');
-var  mongoose = require('mongoose'),
-    Schema = mongoose.Schema
-, util = require("util")
-    , EventEmitter = require("events").EventEmitter,
- config = require('../config');
+var express = require('express'),
+    app = express(),
+    expressJwt = require('express-jwt'),
+    jwt = require('jsonwebtoken'),
+    mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    util = require("util"),
+    EventEmitter = require("events").EventEmitter,
+    config = require('../config');
 
 app.set('superSecret', config.secret);
 
 
 var userSchema = new Schema({
-  username: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-      unique: true,
-      required: [true, '{PATH} is required.'], //match: /^[\w][\w\-\.]*[\w]$/i,
-      match: [
-          new RegExp('^[a-z0-9_.-]+$', 'i'),
-          '{PATH} \'{VALUE}\' is not valid. Use only letters, numbers, underscore or dot.'
-      ],
-      minlength: 5,
-      maxlength: 60
-  },
+    username: {
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+        unique: true,
+        required: [true, '{PATH} is required.'], //match: /^[\w][\w\-\.]*[\w]$/i,
+        match: [
+            new RegExp('^[a-z0-9_.-]+$', 'i'),
+            '{PATH} \'{VALUE}\' is not valid. Use only letters, numbers, underscore or dot.'
+        ],
+        minlength: 5,
+        maxlength: 60
+    },
 
     emailAddress: {
         type: String,
@@ -44,29 +44,37 @@ function UserList() {
 
 util.inherits(UserList, EventEmitter);
 
-UserList.prototype.save = function (userData, cb) {
-var userDetails = new user(userData);
-    userDetails.save(function (error, data) {
+// UserList.prototype.all = function (cb) {
+//     return user.find({}, function (err, data) {
+//
+//         return cb(data);
+//     });
+// };
+
+UserList.prototype.save = function(userData, cb) {
+    var userDetails = new user(userData);
+    userDetails.save(function(error, data) {
         if (error) {
             return cb({
-                      success: false,
-                      message: 'User registerated failed'
-                  },null)
-        }else if(data){
-      return cb(null,{
-                      success: true,
-                      message: 'User registerated successful'
-                  });
-    }
-  });
+                success: false,
+                message: 'User registerated failed'
+            }, null)
+        } else if (data) {
+            return cb(null, {
+                success: true,
+                message: 'User registerated successful'
+            });
+        }
+    });
 
 };
 
-UserList.prototype.findAll = function(login, cb) {
+UserList.prototype.find = function(domain, cb) {
+    console.log(cb);
 
     user.findOne({
-        emailAddress:login.emailAddress
-    },function(err,user) {
+        emailAddress: domain.emailAddress
+    }, function(err, user) {
 
         if (!user) {
 
@@ -75,7 +83,40 @@ UserList.prototype.findAll = function(login, cb) {
                 description: 'User Authentication failed because user not found'
             });
         } else if (user) {
-console.log(user);
+            if (domain.subDomain == "") {
+                return cb({
+                    "status": false,
+                    "message": "Domain name registerated failed"
+                }, null)
+            } else {
+                var subdomainName = domain.subDomain;
+                var resSubdomain = {
+                    "success": true,
+                    "domainRedirection": subdomainName,
+                    "message": "Domain name registerated successful"
+
+                }
+                return cb(null, resSubdomain);
+            }
+        }
+    });
+};
+
+
+UserList.prototype.findAll = function(login, cb) {
+
+    user.findOne({
+        emailAddress: login.emailAddress
+    }, function(err, user) {
+
+        if (!user) {
+
+            return cb(null, {
+                authsuccess: false,
+                description: 'User Authentication failed because user not found'
+            });
+        } else if (user) {
+            console.log(user);
             var token = jwt.sign(user, app.get('superSecret'), {
                 expiresIn: 86400 // expires in 24 hours
             });

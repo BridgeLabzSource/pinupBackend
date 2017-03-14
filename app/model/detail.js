@@ -3,12 +3,12 @@ var mongoose = require('mongoose'),
     util = require("util"),
     EventEmitter = require("events").EventEmitter;
 
-    var visitorSchema = new Schema({
-      device:  String,
-      browser: String
-    });
+var visitorSchema = new Schema({
+    device: String,
+    browser: String
+});
 
-var visit = mongoose.model('visit',visitorSchema);
+var visit = mongoose.model('visit', visitorSchema);
 
 function Details() {
     EventEmitter.call(this);
@@ -16,15 +16,15 @@ function Details() {
 
 util.inherits(Details, EventEmitter);
 
-Details.prototype.savenow = function (data, cb) {
-var visitors = new visit(data);
-    visitors.save(function (error, result) {
+Details.prototype.savenow = function(data, cb) {
+    var visitors = new visit(data);
+    visitors.save(function(error, result) {
         if (error) {
-            return cb(error,null)
-        }else if(data){
-      return cb(null,result);
-    }
-  });
+            return cb(error, null)
+        } else if (data) {
+            return cb(null, result);
+        }
+    });
 
 };
-module.exports =new Details;
+module.exports = new Details;

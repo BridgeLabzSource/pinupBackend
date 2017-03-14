@@ -13,41 +13,40 @@ require('mongoose-schema-jsonschema')(mongoose);
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
-var AbstractSchema = function (){
-    Schema.apply(this,arguments);
+var AbstractSchema = function() {
+    Schema.apply(this, arguments);
     this.add({
-      isDeleted: {
-        type: Boolean,
-        default:false
-      },
-      createdAt :{
-        type: Date
-        
-      },
-      createdBy:{
-        type : ObjectId,
-        ref : 'admin'
-      },
-      updatedAt:{
-        type: Date
+        createdAt: {
+            type: Date
+          //  default: Date.now
+        },
+        createdBy: {
+            type: ObjectId,
+            ref: 'admin'
+        },
+        updatedAt: {
+            type: Date
+            //  default : Date.now
+        },
+        updatedBy: {
+            type: ObjectId,
+            ref: 'admin'
+        }
 
-      },
-      updatedBy:{
-        type : ObjectId,
-        ref : 'admin'
-      },
-      deletedAt:{
-        type: Date
-
-      },
-      deletedBy:{
-        type : ObjectId,
-        ref : 'admin'
-      }
     });
 };
+// AbstractSchema.pre('save', function(next) {
+//            if (this.isNew) {
+//                var newDate = new Date;
+//                if (createdAt) this[createdAt] = newDate;
+//                if (updatedAt) this[updatedAt] = newDate;
+//            } else if (this.isModified() && updatedAt) {
+//                this[updatedAt] = new Date;
+//            }
+//            next();
+//        });
 util.inherits(AbstractSchema, Schema);
 
 module.exports = {
-  BaseSchema : AbstractSchema
+    BaseSchema: AbstractSchema
 };
