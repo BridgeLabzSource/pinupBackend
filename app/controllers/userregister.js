@@ -8,7 +8,7 @@ var express = require('express'),
 
 
 router.post('/register', function(req, res) {
-    console.log('inside save controller');
+    // console.log('inside save controller');
     var userData = {
         username: req.body.username,
         emailAddress: req.body.emailAddress
@@ -16,9 +16,9 @@ router.post('/register', function(req, res) {
     // display saved user
     user.save(userData, function(error, data) {
         if (error) {
-            res.send(error)
+            res.json(error)
         } else {
-            res.send(data)
+            res.json(data)
         }
     });
 });

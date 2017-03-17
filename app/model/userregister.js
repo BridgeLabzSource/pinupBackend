@@ -85,7 +85,7 @@ UserList.prototype.find = function(domain, cb) {
         } else if (user) {
             if (domain.subDomain == "") {
                 return cb({
-                    "status": false,
+                    "success": false,
                     "message": "Domain name registerated failed"
                 }, null)
             } else {

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"pinup.subdomains"},{"v":1,"unique":true,"key":{"subDomain":1},"name":"subDomain_1","ns":"pinup.subdomains","background":true}]}

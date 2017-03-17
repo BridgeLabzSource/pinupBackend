@@ -82,7 +82,7 @@ adminData.prototype.find = function(domain, cb) {
         } else if (user) {
             if (domain.subDomain == "") {
                 return cb({
-                    "status": false,
+                    "success": false,
                     "message": "Domain name registerated failed"
                 }, null)
             } else {
@@ -121,6 +121,13 @@ adminData.prototype.findAll = function(login, cb) {
                 var token = jwt.sign(user, app.get('superSecret'), {
                     expiresIn: 86400 // expires in 24 hours
                 });
+                //  token.save(token,function(error, data) {
+                //      if (error) {
+                //          res.send(error)
+                //      } else {
+                //          res.json(data)
+                //      }
+                //  });
                 //send the response to the caller with the accesstoken and data
                 console.log('Authentication is done successfully.....');
 
