@@ -31,7 +31,7 @@ router.post('/register/domain', function(req, res) {
         subDomain: req.body.subDomain
     };
     console.log(domain);
-    admin.find(domain, function(err, data) {
+    admin.adminSetDomain(domain, function(err, data) {
         if (err) {
             res.send(err)
         } else {

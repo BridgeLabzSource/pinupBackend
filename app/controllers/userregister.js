@@ -3,12 +3,16 @@ var express = require('express'),
     router = express.Router(),
     UserList = require('../model/userregister'),
     SubDomain = require('../model/subdomain'),
+        visit12 = require('../model/visitors'),
+    visit = require('./visitors').visitor,
     user = new UserList();
    var subdomainData= [];
 
 
 router.post('/register', function(req, res) {
     // console.log('inside save controller');
+
+
     var userData = {
         username: req.body.username,
         emailAddress: req.body.emailAddress
@@ -16,11 +20,19 @@ router.post('/register', function(req, res) {
     // display saved user
     user.save(userData, function(error, data) {
         if (error) {
+            console.log('fgf');
             res.json(error)
         } else {
-            res.json(data)
+          // visit12.findId(function(err,data1){
+            //  console.log('in register' , data1);
+          // findId
+          console.log('fgfyyyyy');
+          // res.setHeader('Set-Cookie',data1._id);
+          res.json(data);
+          // });
         }
     });
+
 });
 
 router.get('/register/getUserSubDomainList', function(req, res) {
@@ -43,7 +55,7 @@ router.post('/register/setUserSubDomain', function(req, res) {
         emailAddress: req.body.emailAddress,
         subDomain:  req.body.subDomain
     };
-    user.find(domain, function(err, data) {
+    user.domainName(domain, function(err, data) {
         if (err) {
             res.send(err)
         } else {

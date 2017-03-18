@@ -67,7 +67,7 @@ adminData.prototype.save = function(adminDetails, cb) {
 
 };
 
-adminData.prototype.find = function(domain, cb) {
+adminData.prototype.adminSetDomain = function(domain, cb) {
     console.log(cb);
     admin.findOne({
         emailAddress: domain.emailAddress
@@ -121,13 +121,7 @@ adminData.prototype.findAll = function(login, cb) {
                 var token = jwt.sign(user, app.get('superSecret'), {
                     expiresIn: 86400 // expires in 24 hours
                 });
-                //  token.save(token,function(error, data) {
-                //      if (error) {
-                //          res.send(error)
-                //      } else {
-                //          res.json(data)
-                //      }
-                //  });
+              
                 //send the response to the caller with the accesstoken and data
                 console.log('Authentication is done successfully.....');
 

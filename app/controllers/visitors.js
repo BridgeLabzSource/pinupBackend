@@ -1,96 +1,87 @@
 var express = require('express'),
     app = express(),
     useragent = require('express-useragent'),
-    visit = require('../model/detail'),
+    visit = require('../model/visitors'),
     cookieParser = require('cookie-parser'),
     cookie = require('cookie'),
     Promise = require('promise');
+    var Q = require('q');
+    // var Q2 = require('q');
 
-var ID = [];
+    exports.visitor = function(options) {
+        return function(req, res, next) {
+          var x=req.body;
+             console.log(x);
+             var source = req.headers['user-agent'];
+       var agent = useragent.parse(source);
+       var device;
+       var array1 = ["isMobile", "isTablet", "isiPad", "isiPod", "isiPhone", "isDesktop", "isMac", "isSamsung"];
+       var resultJson = useragent.parse(source);
+       // console.log(useragent.parse(source));
+       var flag = false,
+           i = 0;
+       while (!flag) {
+           if (resultJson[array1[i]]) {
+               if (array1[i] == "isDesktop" || array1[i] == "isMac") {
+                   // console.log("Desktop");
+                   device = "Desktop";
+               } else {
+                   // console.log("Mobile");
+                  device = "Mobile";
+               }
+               flag = true;
+           }
+           i++;
+       }
+       var a = {
+               browser: resultJson["browser"],
+               device: device
+           }
+             //var a=req.params.obj;
+             //var month=req.body;
+             //console.log(date);
+             //console.log("pan:");
+             console.log(a);
+             function doQuery1() {
+                 var defered = Q.defer();
+                 visit.savenow(a,function (err, data) {
+                     if (err) {
+                         res.send(err);
+                     }
+                     else {
+                          console.log(data);
+                       if(req.headers.cookie === undefined){
+                         console.log(data._id);
 
-app.use(cookieParser("hello"));
+                         var visitorID = data._id;
+                         console.log('visitor' + visitorID);
+                        res.cookie('hie-Cookie', visitorID);
+                        console.log('hii');
+                        console.log('hh' , req.headers);
+                       }
+                       else {
+                         console.log('cookie exists');
+                           console.log('hh' , req.headers);
+                       }
 
-exports.visitor = function(options) {
-    return function(req, res, next) {
+                         console.log('save');
+                        //  console.log(data);
+                         //res.send(data);
+                         defered.resolve(data);
 
-        console.log('test');
-        SECRET = 'visitor';
-        var visitorID = [];
-        var source = req.headers['user-agent'];
-        var agent = useragent.parse(source);
-        var device;
-        var array1 = ["isMobile", "isTablet", "isiPad", "isiPod", "isiPhone", "isDesktop", "isMac", "isSamsung"];
-        var resultJson = useragent.parse(source);
-        // console.log(useragent.parse(source));
-        var flag = false,
-            i = 0;
-        while (!flag) {
-            if (resultJson[array1[i]]) {
-                if (array1[i] == "isDesktop" || array1[i] == "isMac") {
-                    // console.log("Desktop");
-                    device = "Desktop";
-                } else {
-                    // console.log("Mobile");
-                    device = "Mobile";
-                }
-                flag = true;
-            }
-            i++;
+                     }
+                 });
+                 return defered.promise;
+             }
+
+
+             console.log('aaaaaa');
+             Q.all([doQuery1()]).then(function (results) {
+                 console.log('and');
+
+                //  res.send(results);
+                 //cb(null,c);
+         });
+          next();
         }
-        var data = {
-                browser: resultJson["browser"],
-                device: device
-            }
-        console.log(req, res, next);
-        if (req.headers.cookie === undefined) {
-            visit.savenow(data, function(error, data1) {
-                if (error) {
-                    //console.log(error)
-                } else {
-                    visitorID = data1._id;
-                    //res.setHeader('Set-Cookie', "val");
-                    //res.cookie("pincookie", visitorID);
-                    console.log('cookie exists', req.headers.cookie);
-                }
-            });
-            next();
-        } else {
-            // res.clearCookie('pincookie');
-            // cookies.get('pincookie');
-            // yes, cookiemodule.exports = visit; was already present
-            console.log('cookie exists', req.headers.cookie);
-
-            res.clearCookie('pincookie', {
-                path: '/'
-            })
-            console.log(req.headers.cookie);
-
-            visit.findId(data, function(err, data) {
-                if (err) {
-                    res.send(err)
-                } else {
-                    // console.log("data ",data);
-                    for (var i = 0; i < data.length; i++) {
-                        // console.log(data[i]);
-                        visitorID[i] = data[i]._id;
-
-                    }
-                    cookiearray = req.headers.cookie.split(';');
-                    for (var i = 0; i < cookiearray.length; i++) {
-                        name = cookiearray[i].split('=')[0];
-                        value = cookiearray[i].split('=')[1];
-                        console.log("Key is : " + name + " and Value is : " + value);
-                    }
-                }
-            });
-
-        };
-        //
-        next();
-    };
-}
-exports.ID = function(options) {
-    return function(req, res, next) {
-        console.log(ID);
-    }
-}
+      }

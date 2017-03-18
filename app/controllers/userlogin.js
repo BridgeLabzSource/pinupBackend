@@ -9,7 +9,7 @@ router.post('/signin', function(req, res) {
     var login = {
         emailAddress: req.body.emailAddress
     };
-    user.findAll(login, function(err, data) {
+    user.userLogin(login, function(err, data) {
         if (err) {
             res.send(err)
         } else {

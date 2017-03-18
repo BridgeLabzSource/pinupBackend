@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // app.use(cookie('my cookie'));
-// app.all('/*',function(req,res,next){
+// app.all('/user/*',function(req,res,next){
 //   console.log('inside /  ');
 //   console.log('req ',req.cookies);
 // if (!req.cookies)

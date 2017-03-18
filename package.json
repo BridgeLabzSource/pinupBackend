@@ -28,6 +28,7 @@
     "mongoose-validate": "0.0.5",
     "morgan": "^1.8.1",
     "os": "^0.1.1",
+    "q": "^1.4.1",
     "request": "^2.81.0",
     "request-ip": "^2.0.1",
     "set-cookie": "0.0.4",

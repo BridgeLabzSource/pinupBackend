@@ -4,8 +4,9 @@ var express = require('express'),
     visitors = require('./visitors').visitor;
 
 
-router.use(visitors({}));
 
+router.use(visitors({}));
+// router.use('/user', require('./visitors'));
 router.use('/admin', require('./adminregister'));
 router.use('/admin', require('./signin'));
 // router.use('/admin', require('./demo'));

@@ -69,7 +69,7 @@ UserList.prototype.save = function(userData, cb) {
 
 };
 
-UserList.prototype.find = function(domain, cb) {
+UserList.prototype.domainName = function(domain, cb) {
     console.log(cb);
 
     user.findOne({
@@ -103,7 +103,7 @@ UserList.prototype.find = function(domain, cb) {
 };
 
 
-UserList.prototype.findAll = function(login, cb) {
+UserList.prototype.userLogin = function(login, cb) {
 
     user.findOne({
         emailAddress: login.emailAddress

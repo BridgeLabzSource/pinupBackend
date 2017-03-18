@@ -10,7 +10,7 @@ router.post('/signin', function(req, res) {
         emailAddress: req.body.emailAddress,
         password: req.body.password
     };
-    admin.findAll(login, function(err, data) {
+    admin.adminLogin(login, function(err, data) {
         if (err) {
             res.send(err)
         } else {
